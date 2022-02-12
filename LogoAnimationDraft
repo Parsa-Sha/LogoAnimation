@@ -1,0 +1,28 @@
+float start, decelleration, end, i, j, k, l, m, n, o, p;
+
+void setup() {
+  size(1120, 600);
+  start = 0;
+  decelleration = 1;
+  end = 3000;
+  k = millis();
+}
+
+void draw() {
+  background(83, 82, 78);
+  
+  
+  k = (millis() % end) / end;
+  decelleration = abs(map(min(k, 500), 0, 500, 0, 1) - 1);
+  l = ((cos(k * 2 * PI + PI) + 1) / 2) * decelleration;
+
+  strokeWeight(2);
+  
+  // Dots
+  fill(206, 188, 168);
+  stroke(206, 188, 168);
+  ellipse(width / 2, l * height, 10, 10);
+  println(decelleration);
+  
+
+}

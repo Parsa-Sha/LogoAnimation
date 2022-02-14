@@ -1,40 +1,146 @@
-// Non-Linear Animation
-// Non-linear Animation with math and normallized time
-// 02/09/2022
-// https://github.com/Parsa-S/SchoolWork/blob/main/ElectronicFantasy.pde 
+// Logo Animation
+// Taking advantage of the millis() function to create a timeline 
+// in which values are changed with non-linear functions
+// 02/13/2022
+// 
 
-float start, end, i, j, k, l, m, n, o, p, decelleration;
+float t, x1, x2, y1, y2, x, y, yText, t1, t2, bRadius, b2Radius, sprayRadius, functTextAlpha, logoBgScale, textSize, lineWidth, xSpray, ySpray, ripple;
 
 void setup() {
-  size(950, 540);
-  start = 0;
-  end = 3000;
-  k = millis();
-  decelleration = 1;
+  size(1120, 600);
 }
 
 void draw() {
   background(83, 82, 78);
+  t = millis();
   
-  // Formulas
-  k = (millis() % end) / end;
-  l = abs(cos(k * PI) - 1) / 2;
-  m = sin(k * (PI / 2));
-  n = cos(k * (PI / 2) + PI) + 1;  
-  p = abs(sin(k * PI));  
+  // Second Background
+  if (t >= 1100 && t < 2000){
+    bRadius = LinearMotionSelect(1100, 2000, t, "EL") * 5000;
+  }
+  fill(50, 28, 74);
+  stroke(50, 28, 74);
+  ellipse(width / 2, -10, bRadius, bRadius);
+ 
+ 
+ // Third Background
+  if (t >= 2500 && t < 3000){
+    b2Radius = LinearMotionSelect(2500, 3000, t, "EL") * 5000;
+  }
+  fill(108, 19, 198);
+  stroke(108, 19, 198);
+  ellipse(width / 2, height / 2, b2Radius, b2Radius);
+ 
+  // Polygon spray
+  if (t >= 300 && t < 1000) {
+    xSpray = LinearMotionSelect(300, 1000, t, "EL");  
+    ySpray = LinearMotionSelect(300, 1000, t, "EL");  
+    sprayRadius = 0;
+  } 
+  if (t >= 600 && t < 1000) {
+    sprayRadius = (1 - LinearMotionSelect(600, 1000, t, "EE")) * 8;
+  } 
+
+  fill(253, 226, 52);
+  stroke(253, 226, 52);
+  ellipse((width / 2) - xSpray * 100, 0 + ySpray * 500, sprayRadius, sprayRadius);
+  ellipse((width / 2) + xSpray * 150, 0 + ySpray * 450, sprayRadius, sprayRadius);
+  ellipse((width / 2) + xSpray * 50, 0 + ySpray * 550, sprayRadius, sprayRadius);
   
+  x = width / 2;
+  textSize = 1;
+  // Logo
+  if (t >= 200 && t < 1000) { // First Down
+    y = LinearMotionSelect(200, 1000, t, "EE") * height;
+    y = map(y, 0, height, -100, height);
+    ripple = 1;
+  } else if (t >= 1000 && t < 2000) { // First Up
+    y = height - LinearMotionSelect(1000, 2000, t, "EE") * height;
+    yText = y + 20;
+  } else if (t >= 2000 && t < 2700) { // Second down
+    y = LinearMotionSelect(2000, 2700, t, "EL") * (height / 2);
+    textSize = LinearMotionSelect(2000, 2700, t, "EL");
+    logoBgScale = LinearMotionSelect(2000, 2700, t, "EL");
+  } 
   
+  if (t >= 2000 && t < 2850) { // First Text Down
+    yText = LinearMotionSelect(2000, 2850, t, "LE") * (20 + height / 2) + 20;
+  } else if (t >= 2850 & t < 3150) { // First Text Up
+    yText = -1 * LinearMotionSelect(2850, 3150, t, "LE") * 40 + height / 2 + 20 + 20;
+  } else if (t >= 3150 && t < 3300) { // Second Text Down
+    yText = LinearMotionSelect(3150, 3300, t, "LE") * 20 + height / 2 - 20 + 20;
+  }
   
-  o = ((cos(k * 2 * PI + PI) + 1) / 2) * (-1 * pow(k, 1/3) + 1);
+  if (t >= 2700 && t < 3150) {
+    functTextAlpha = LinearMotionSelect(2700, 3150, t, "EL") * 255;
+    lineWidth = LinearMotionSelect(2700, 3150, t, "EL"); 
+  }
+  
+  if (t >= 2700 && t < 3500) {
+    ripple = LinearMotionSelect(2700, 3500, t, "LE");
+    noFill();
+    stroke(237, 37, 120, 255 - ripple * 255);
+    ellipse(width / 2, height / 2, 200 + ripple * 75, 200 + ripple * 75);
+    ellipse(width / 2, height / 2, 200 + ripple * 75 * 2.2, 200 + ripple * 75 * 2.2);
+    ellipse(width / 2, height / 2, 200 + ripple * 75 * 3.4, 200 + ripple * 75 * 3.4);
+    ellipse(width / 2, height / 2, 200 + ripple * 75 * 4.6, 200 + ripple * 75 * 4.6);
+  
+  }
+  
+  // Logo Background Background
+  
+  // Logo Background
+  fill(237, 37, 120);
+  stroke(237, 37, 120);
+  rectMode(RADIUS);
+  ellipse(x, y, 50 + 150 * logoBgScale, 50 + 150 * logoBgScale);
+  
+ 
+  // Logo Text
+  fill(250);
+  stroke(250);
+  textAlign(CENTER);
+  textSize(75 * textSize);
+  if (t >= 2000) {
+  text("EXCILLIOUS'", x, yText);
+  }
+  
+  fill(250, functTextAlpha);
+  stroke(250, functTextAlpha);
+  textSize(50);
+  text("F U N C T I O N S", x, height / 2 + 75);
+  strokeWeight(4);
+  line((width / 5) * 2 - 100 * lineWidth, height / 2 + 100, (width / 5) * 3 + 100 * lineWidth, height / 2 + 100);
+}
 
 
-  // Lines
-  strokeWeight(2);
 
-  
-  // Dots
-  fill(206, 188, 168);
-  stroke(206, 188, 168);
-  ellipse(width / 2, o * height, 20, 20);
-  println(o);
+float LinearMotion(float t1, float t2, float time){
+  return max(min(map(time, t1, t2, 0, 1), 1), 0);
+}
+
+float LinearEaseInMotion(float t1, float t2, float time){
+  return sin(LinearMotion(t1, t2, time) * (PI / 2));
+}
+
+float LinearEaseOutMotion(float t1, float t2, float time){
+  return cos(LinearMotion(t1, t2, time) * (PI/2) + PI) + 1;
+}
+
+float LinearEaseInEaseOutMotion(float t1, float t2, float time){
+  return abs(cos(LinearMotion(t1, t2, time) * PI) - 1) / 2;
+}
+float LinearMotionSelect(float t1, float t2, float time, String mSelect) {
+  float r = 0.0; 
+  switch(mSelect) {
+    case "LL":
+    r = max(min(map(time, t1, t2, 0, 1), 1), 0);
+    case "EL":
+    r = sin(max(min(map(time, t1, t2, 0, 1), 1), 0) * (PI / 2));
+    case "LE":
+    r = cos(max(min(map(time, t1, t2, 0, 1), 1), 0) * (PI/2) + PI) + 1;
+    case "EE":
+    r = abs(cos(max(min(map(time, t1, t2, 0, 1), 1), 0) * PI) - 1) / 2;
+  }
+  return r;
 }

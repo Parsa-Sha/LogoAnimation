@@ -2,7 +2,7 @@
 // Taking advantage of the millis() function to create a timeline 
 // in which values are changed with non-linear functions
 // 02/13/2022
-// 
+// https://github.com/Parsa-Sha/LogoAnimation
 
 float t, x1, x2, y1, y2, x, y, yText, t1, t2, bRadius, b2Radius, sprayRadius, functTextAlpha, logoBgScale, textSize, lineWidth, xSpray, ySpray, ripple;
 

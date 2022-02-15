@@ -37,6 +37,7 @@ void draw() {
     ySpray = LinearMotionSelect(300, 1000, t, "EL");  
     sprayRadius = 0;
   } 
+  
   if (t >= 600 && t < 1000) {
     sprayRadius = (1 - LinearMotionSelect(600, 1000, t, "EE")) * 8;
   } 
@@ -49,6 +50,7 @@ void draw() {
   
   x = width / 2;
   textSize = 1;
+  
   // Logo
   if (t >= 200 && t < 1000) { // First Down
     y = LinearMotionSelect(200, 1000, t, "EE") * height;
@@ -87,15 +89,12 @@ void draw() {
   
   }
   
-  // Logo Background Background
-  
   // Logo Background
   fill(237, 37, 120);
   stroke(237, 37, 120);
   rectMode(RADIUS);
   ellipse(x, y, 50 + 150 * logoBgScale, 50 + 150 * logoBgScale);
   
- 
   // Logo Text
   fill(250);
   stroke(250);
@@ -113,23 +112,7 @@ void draw() {
   line((width / 5) * 2 - 100 * lineWidth, height / 2 + 100, (width / 5) * 3 + 100 * lineWidth, height / 2 + 100);
 }
 
-
-
-float LinearMotion(float t1, float t2, float time){
-  return max(min(map(time, t1, t2, 0, 1), 1), 0);
-}
-
-float LinearEaseInMotion(float t1, float t2, float time){
-  return sin(LinearMotion(t1, t2, time) * (PI / 2));
-}
-
-float LinearEaseOutMotion(float t1, float t2, float time){
-  return cos(LinearMotion(t1, t2, time) * (PI/2) + PI) + 1;
-}
-
-float LinearEaseInEaseOutMotion(float t1, float t2, float time){
-  return abs(cos(LinearMotion(t1, t2, time) * PI) - 1) / 2;
-}
+// Linear Motion Function
 float LinearMotionSelect(float t1, float t2, float time, String mSelect) {
   float r = 0.0; 
   switch(mSelect) {
